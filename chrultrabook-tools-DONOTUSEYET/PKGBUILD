@@ -24,6 +24,11 @@ build() {
 
 package() {
 	cd "$srcdir/$gitname-$pkgver"
+
+    tauri_app_ver=$(jq -r .package.version src-tauri/tauri.conf.json)
+
+    # /usr/share
+    install -Ddm644 "target/release/bundle/deb/chrultrabook-tools_${tauri_app_ver}_amd64/data/usr/share" "$pkgdir/usr/share"
     
     # binaries
 	install -Dm755 target/release/chrultrabook-tools "${pkgdir}/usr/bin/chrultrabook-tools"
@@ -31,8 +36,8 @@ package() {
     install -Dm4755 "${srcdir}/cbmem" "${pkgdir}/usr/bin/cbmem"
 
     # udev rule
-    install -Dm755 linux/99-cros-ec.rules "${pkgdir}/etc/udev/rules.d/99-cros-ec.rules"
-
+    install -Dm644 linux/99-cros-ec.rules "$pkgdir/etc/udev/rules.d/99-cros-ec.rules"
+    
     # licence
     install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
 }
