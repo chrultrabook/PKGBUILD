@@ -1,0 +1,8 @@
+# ignore everything
+**/*
+
+# execpt everything in root
+!/* 
+
+# exept PKGBUILD
+!PKGBUILD
